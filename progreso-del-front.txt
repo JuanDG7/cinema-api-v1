@@ -1,0 +1,4 @@
+crear primero un poryecto con react...
+npm install react-router-dom         --para el servidor
+npm create vite@latest . -- --template react --para el frontend
+

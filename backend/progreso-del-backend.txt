@@ -1,0 +1,16 @@
+FRONTEND
+crear primero un poryecto con react...
+npm install react-router-dom                      --para el servidor
+npm create vite@latest . -- --template react      --para el frontend
+
+
+
+
+
+npm install express
+npm install --save-dev nodemon
+npm install body-parser
+
+
+git fetch origin
+git reset --hard origin/main
