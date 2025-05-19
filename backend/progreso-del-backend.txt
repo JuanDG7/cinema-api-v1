@@ -10,7 +10,5 @@ npm create vite@latest . -- --template react      --para el frontend
 npm install express
 npm install --save-dev nodemon
 npm install body-parser
-
-
-git fetch origin
-git reset --hard origin/main
+npm install express-validator
+npm install mongoose
