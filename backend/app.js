@@ -3,6 +3,7 @@ const path = require("path");
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+require("dotenv").config();
 
 const moviesRoutes = require("./routes/movies");
 
@@ -28,7 +29,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose
-  .connect("mongodb+srv://jmdmg86:mongodb@cluster0.majzd.mongodb.net/movies")
+  .connect(process.env.MONGODB_URI)
   .then((result) => {
     app.listen(8000);
     console.log("Connected to database!");

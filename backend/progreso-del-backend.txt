@@ -12,3 +12,4 @@ npm install --save-dev nodemon
 npm install body-parser
 npm install express-validator
 npm install mongoose
+npm install dotenv
