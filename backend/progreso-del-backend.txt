@@ -13,3 +13,11 @@ npm install body-parser
 npm install express-validator
 npm install mongoose
 npm install dotenv
+npm install uuid
+npm install multer
+npm install bcryptjs
+
+
+
+
+
