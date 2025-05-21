@@ -16,8 +16,7 @@ npm install dotenv
 npm install uuid
 npm install multer
 npm install bcryptjs
-
-
+npm install jsonwebtoken
 
 
 
