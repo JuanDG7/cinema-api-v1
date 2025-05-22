@@ -15,13 +15,11 @@ const movieSchema = new Schema(
       type: String,
       required: true,
     },
+
     creator: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
-    },
-    creator: {
-      type: Object,
-      required: String,
     },
   },
   { timestamps: true }

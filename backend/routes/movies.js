@@ -1,14 +1,18 @@
 const express = require("express");
 const { body } = require("express-validator");
+
 const moviesController = require("../controllers/movies");
+const isAuth = require("../middelware/is-auth");
+
 const router = express.Router();
 
 // GET //api//movies
-router.get("/", moviesController.getAllMovies);
+router.get("/", isAuth, moviesController.getAllMovies);
 
 // POST //api//movies/createMovie
 router.post(
   "/createMovie",
+  isAuth,
   [
     body("title")
       .trim()
@@ -23,12 +27,13 @@ router.post(
 );
 
 // GET //api//movies/:movieId
-router.get("/:movieId", moviesController.getMovie);
+router.get("/:movieId", isAuth, moviesController.getMovie);
 
 // PUT // posts/:postId
 // PUT //api//movies/:movieId
 router.put(
   "/:movieId",
+  isAuth,
   [
     body("title")
       .trim()
@@ -42,6 +47,6 @@ router.put(
   moviesController.updateMovie
 );
 
-router.delete("/:movieId", moviesController.deleteMovie);
+router.delete("/:movieId", isAuth, moviesController.deleteMovie);
 
 module.exports = router;

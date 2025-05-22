@@ -3,6 +3,7 @@ const { body } = require("express-validator");
 
 const User = require("../models/user.js");
 const authControllers = require("../controllers/auth.js");
+const isAuth = require("../middleware/is-auth.js");
 
 const router = express.Router();
 
@@ -46,6 +47,14 @@ router.post(
     body("password").trim().isLength({ min: 5 }),
   ],
   authControllers.login
+);
+
+router.get("/status", isAuth, authControllers.getUserStatus);
+router.patch(
+  "/status",
+  [body("status").trim().not().isEmpty()],
+  isAuth,
+  authControllers.updateUserStatus
 );
 
 module.exports = router;

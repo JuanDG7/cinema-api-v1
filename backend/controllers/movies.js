@@ -3,6 +3,8 @@ const path = require("path");
 const { validationResult } = require("express-validator");
 
 const Movie = require("../models/movie");
+const User = require("../models/user");
+
 // controllers/movies.js
 //exports.getPosts
 
@@ -59,15 +61,28 @@ exports.createMovie = (req, res, next) => {
     title: title,
     content: content,
     imageUrl: imageUrl,
-    creator: { name: "Max" },
+    creator: req.userId, // this is the userId from the token
   });
   movie
     .save()
     .then((result) => {
-      console.log(result);
+      return User.findById(req.userId); // find the user who created the movie
+    })
+    .then((user) => {
+      if (!user) {
+        const error = new Error("User not found.");
+        error.statusCode = 404;
+        throw error;
+      }
+      creator = user; // this is the user who created the movie
+      user.movies.push(movie); // add the movie to the user's movies array
+      return user.save(); // save the user
+    })
+    .then((result) => {
       res.status(201).json({
-        message: "Película creada",
-        movie: result,
+        message: "Movie created successfully!",
+        movie: movie,
+        creator: { _id: creator._id, name: creator.name }, // this is the user who created the movie
       });
     })
     .catch((err) => {
@@ -131,6 +146,11 @@ exports.updateMovie = (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
+      if (movie.creator.toString() !== req.userId) {
+        const error = new Error("No autorizado.");
+        error.statusCode = 403;
+        throw error;
+      } // check if the user is the creator of the movie
       if (imageUrl !== movie.imageUrl) {
         clearImage(movie.imageUrl);
       }
@@ -163,8 +183,20 @@ exports.deleteMovie = (req, res, next) => {
         error.statusCode = 404;
         throw error;
       }
+      if (movie.creator.toString() !== req.userId) {
+        const error = new Error("No autorizado.");
+        error.statusCode = 403;
+        throw error;
+      } // check if the user is the creator of the movie
       clearImage(movie.imageUrl);
       return Movie.findByIdAndDelete(movieId);
+    })
+    .then((result) => {
+      return User.findById(req.userId); // find the user who created the movie
+    })
+    .then((user) => {
+      user.movies.pull(movieId); // remove the movie from the user's movies array
+      return user.save(); // save the user
     })
     .then((result) => {
       res.status(200).json({
