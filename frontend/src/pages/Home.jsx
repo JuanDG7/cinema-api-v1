@@ -1,15 +1,12 @@
 import { Link } from "react-router-dom";
-
-function Home() {
+function HomePage() {
   return (
     <div>
-      <h1>Welcome to the Home Page</h1>
-      <p>This is the home page of our application.</p>
+      <h1>HOMEPAGE</h1>
       <p>
-        Go to <Link to="/products">the list of products </Link>
+        ir a <Link to="/products">PRODUCTOS</Link>.
       </p>
     </div>
   );
 }
-
-export default Home;
+export default HomePage;
