@@ -7,7 +7,7 @@ const isAuth = require("../middleware/is-auth");
 const router = express.Router();
 
 // GET //api//movies
-router.get("/", isAuth, moviesController.getAllMovies);
+router.get("/", moviesController.getAllMovies);
 
 // POST //api//movies/createMovie
 router.post(
@@ -27,7 +27,7 @@ router.post(
 );
 
 // GET //api//movies/:movieId
-router.get("/:movieId", isAuth, moviesController.getMovie);
+router.get("/:movieId", moviesController.getMovie);
 
 // PUT // posts/:postId
 // PUT //api//movies/:movieId

@@ -1,14 +1,29 @@
-import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
+import MovieItem from "../components/MovieItem.jsx";
 
 function MovieDetailPage() {
-  const params = useParams();
+  const data = useLoaderData();
 
-  return (
-    <div>
-      <h1>Detalles de la Peli</h1>
-      <p>El id de la pelie es {params.movieId}</p>
-    </div>
-  );
+  return <MovieItem movie={data} />;
 }
 
 export default MovieDetailPage;
+
+export async function loader({ params }) {
+  const id = params.movieId;
+  const response = await fetch("http://localhost:8000/api/movies/" + id, {
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  });
+
+  if (!response.ok) {
+    throw new Response(JSON.stringify("Failed to fetch movie details"), {
+      status: 500,
+    });
+  } else {
+    const resData = await response.json();
+    return resData.movie;
+  }
+}

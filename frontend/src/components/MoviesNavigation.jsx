@@ -13,13 +13,14 @@ function MoviesNavigation() {
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
               }
+              end
             >
               All Movies
             </NavLink>
           </li>
           <li>
             <NavLink
-              to="/movies"
+              to="/movies/new"
               className={({ isActive }) =>
                 isActive ? classes.active : undefined
               }

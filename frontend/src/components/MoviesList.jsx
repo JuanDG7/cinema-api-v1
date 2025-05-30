@@ -1,23 +1,25 @@
-// import { useLoaderData } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import classes from "./MoviesList.module.css";
 
+import MovieList from "./MovieItem";
 function MoviesList({ movies }) {
-  // const movies = useLoaderData();
-
   return (
     <div className={classes.movies}>
       <h1>All Movies</h1>
       <ul className={classes.list}>
-        {movies.map((event) => (
-          <li key={event.id} className={classes.item}>
-            <a href="...">
-              <img src={event.image} alt={event.title} />
+        {movies.map((movie) => (
+          <li key={movie._id} className={classes.item}>
+            <Link to={movie._id}>
+              <img
+                src={"http://localhost:8000/" + movie.imageUrl}
+                alt={movie.title}
+              />
               <div className={classes.content}>
-                <h2>{event.title}</h2>
-                <time>{event.date}</time>
+                <h2>{movie.title}</h2>
+                <time>{new Date(movie.createdAt).toLocaleDateString()}</time>
               </div>
-            </a>
+            </Link>
           </li>
         ))}
       </ul>

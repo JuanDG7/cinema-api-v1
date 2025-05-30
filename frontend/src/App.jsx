@@ -1,20 +1,24 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import HomePage from "./pages/Home.jsx";
-import MoviesPage from "./pages/Movies.jsx";
-import MovieDetailPage from "./pages/MovieDetail.jsx";
-import NewMoviePage from "./pages/NewMovie.jsx";
+import MoviesPage, { loader as moviesLoader } from "./pages/Movies.jsx";
+import MovieDetailPage, {
+  loader as eventDetailLoader,
+} from "./pages/MovieDetail.jsx";
+import NewMoviePage, { action as newMovieAction } from "./pages/NewMovie.jsx";
 import EditMoviePage from "./pages/EditMovie.jsx";
 import RootLayout from "./pages/Root.jsx";
 import MoviesLayout from "./pages/MoviesRoot.jsx";
 import AuthenticationPage, {
   action as authAction,
 } from "./pages/Authentication.jsx";
+import ErrorPage from "./pages/Error.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       {
@@ -23,13 +27,17 @@ const router = createBrowserRouter([
         action: authAction,
       },
       {
-        path: "/movies",
+        path: "movies",
         element: <MoviesLayout />,
         children: [
-          { index: true, element: <MoviesPage /> },
-          { path: "/movies/:movieId", element: <MovieDetailPage /> },
-          { path: "/movies/new", element: <NewMoviePage /> },
-          { path: "/movies/:movieId/edit", element: <EditMoviePage /> },
+          { index: true, element: <MoviesPage />, loader: moviesLoader },
+          {
+            path: ":movieId",
+            element: <MovieDetailPage />,
+            loader: eventDetailLoader,
+          },
+          { path: "new", element: <NewMoviePage />, action: newMovieAction },
+          { path: ":movieId/edit", element: <EditMoviePage /> },
         ],
       },
     ],
