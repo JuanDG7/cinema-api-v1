@@ -3,9 +3,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import HomePage from "./pages/Home.jsx";
 import MoviesPage, { loader as moviesLoader } from "./pages/Movies.jsx";
 import MovieDetailPage, {
-  loader as eventDetailLoader,
+  loader as movieDetailLoader,
+  action as deleteEventAction,
 } from "./pages/MovieDetail.jsx";
-import NewMoviePage, { action as newMovieAction } from "./pages/NewMovie.jsx";
+import NewMoviePage from "./pages/NewMovie.jsx";
 import EditMoviePage from "./pages/EditMovie.jsx";
 import RootLayout from "./pages/Root.jsx";
 import MoviesLayout from "./pages/MoviesRoot.jsx";
@@ -13,6 +14,10 @@ import AuthenticationPage, {
   action as authAction,
 } from "./pages/Authentication.jsx";
 import ErrorPage from "./pages/Error.jsx";
+import { action as manipulateEventAction } from "./components/MovieForm.jsx";
+import NewsletterPage, {
+  action as newsletterAction,
+} from "./pages/Newsletter.jsx";
 
 const router = createBrowserRouter([
   {
@@ -33,12 +38,32 @@ const router = createBrowserRouter([
           { index: true, element: <MoviesPage />, loader: moviesLoader },
           {
             path: ":movieId",
-            element: <MovieDetailPage />,
-            loader: eventDetailLoader,
+            id: "movie-detail",
+            loader: movieDetailLoader,
+            children: [
+              {
+                index: true,
+                element: <MovieDetailPage />,
+                action: deleteEventAction,
+              },
+              {
+                path: "edit",
+                element: <EditMoviePage />,
+                action: manipulateEventAction,
+              },
+            ],
           },
-          { path: "new", element: <NewMoviePage />, action: newMovieAction },
-          { path: ":movieId/edit", element: <EditMoviePage /> },
         ],
+      },
+      {
+        path: "new",
+        element: <NewMoviePage />,
+        action: manipulateEventAction,
+      },
+      {
+        path: "newsletter",
+        element: <NewsletterPage />,
+        action: newsletterAction,
       },
     ],
   },

@@ -1,8 +1,8 @@
-import { useLoaderData } from "react-router-dom";
+import { useRouteLoaderData, redirect } from "react-router-dom";
 import MovieItem from "../components/MovieItem.jsx";
 
 function MovieDetailPage() {
-  const data = useLoaderData();
+  const data = useRouteLoaderData("movie-detail");
 
   return <MovieItem movie={data} />;
 }
@@ -26,4 +26,22 @@ export async function loader({ params }) {
     const resData = await response.json();
     return resData.movie;
   }
+}
+
+export async function action({ params }) {
+  const movieId = params.movieId;
+  const response = await fetch("http://localhost:8000/api/movies/" + movieId, {
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  });
+
+  if (!response.ok) {
+    throw new Response(JSON.stringify("Failed to delete movie"), {
+      status: 500,
+    });
+  }
+
+  return redirect("/movies "); // Return null to indicate successful deletion
 }
